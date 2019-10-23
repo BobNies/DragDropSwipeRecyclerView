@@ -45,24 +45,10 @@ class HorizontalListFragment : BaseListFragment() {
         } else {
             DragDropSwipeRecyclerView.ListOrientation.HORIZONTAL_LIST_WITH_UNCONSTRAINED_DRAGGING
         }
-        if (currentListFragmentConfig.isUsingStandardItemLayout) {
-            setStandardItemLayoutAndDivider()
-        } else {
-            setCardViewItemLayoutAndNoDivider()
-        }
+
         setupLayoutBehindItemLayoutOnSwiping()
 
         return binding.root
-    }
-
-    private fun setStandardItemLayoutAndDivider() {
-        list.itemLayoutId = R.layout.list_item_horizontal_list
-        list.dividerDrawableId = R.drawable.divider_horizontal_list
-    }
-
-    private fun setCardViewItemLayoutAndNoDivider() {
-        list.itemLayoutId = R.layout.list_item_horizontal_list_cardview
-        list.dividerDrawableId = null
     }
 
     private fun setupLayoutBehindItemLayoutOnSwiping() {

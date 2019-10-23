@@ -15,6 +15,7 @@ import com.ernestoyaquello.dragdropswiperecyclerview.listener.OnItemDragListener
 import com.ernestoyaquello.dragdropswiperecyclerview.listener.OnItemSwipeListener
 import com.ernestoyaquello.dragdropswiperecyclerview.util.DragDropSwipeItemDecoration
 import android.os.Bundle
+import com.ernestoyaquello.dragdropswiperecyclerview.util.RecyclerViewUtil
 
 /**
  * Extension of RecyclerView that detects swipe, drag & drop and scrolling.
@@ -281,13 +282,6 @@ open class DragDropSwipeRecyclerView @JvmOverloads constructor(
         }
 
     /**
-     * The ID of the item layout that will be used to populate each list item.
-     *
-     * Can be set up in XML using the attribute "item_layout".
-     */
-    var itemLayoutId: Int = 0
-
-    /**
      * The ID of the drawable that will be displayed as a divider between list items.
      * If set to null, no divider will be drawn. Null by default.
      *
@@ -548,7 +542,6 @@ open class DragDropSwipeRecyclerView @JvmOverloads constructor(
                     0)
 
             try {
-                itemLayoutId = vars.getResourceId(R.styleable.DragDropSwipeRecyclerView_item_layout, 0)
                 dividerDrawableId = vars.getResourceId(R.styleable.DragDropSwipeRecyclerView_divider, 0)
                 behindSwipedItemIconDrawableId = vars.getResourceId(R.styleable.DragDropSwipeRecyclerView_behind_swiped_item_icon, 0)
                 behindSwipedItemIconSecondaryDrawableId = vars.getResourceId(R.styleable.DragDropSwipeRecyclerView_behind_swiped_item_icon_secondary, 0)
@@ -615,7 +608,6 @@ open class DragDropSwipeRecyclerView @JvmOverloads constructor(
             val bundle = Bundle()
 
             bundle.putParcelable(SUPER_STATE_KEY, superState)
-            bundle.putInt(ITEM_LAYOUT_ID_KEY, itemLayoutId)
             bundle.putInt(DIVIDER_DRAWABLE_ID_KEY, dividerDrawableId ?: 0)
             bundle.putInt(BEHIND_SWIPED_ITEM_ICON_DRAWABLE_ID_KEY, behindSwipedItemIconDrawableId ?: 0)
             bundle.putInt(BEHIND_SWIPED_ITEM_ICON_SECONDARY_DRAWABLE_ID_KEY, behindSwipedItemIconSecondaryDrawableId ?: 0)
@@ -643,7 +635,6 @@ open class DragDropSwipeRecyclerView @JvmOverloads constructor(
 
         if (isSaveEnabled && state is Bundle) {
             superState = state.getParcelable(SUPER_STATE_KEY)
-            itemLayoutId = state.getInt(ITEM_LAYOUT_ID_KEY, 0)
             dividerDrawableId = state.getInt(DIVIDER_DRAWABLE_ID_KEY, 0)
             behindSwipedItemIconDrawableId = state.getInt(BEHIND_SWIPED_ITEM_ICON_DRAWABLE_ID_KEY, 0)
             behindSwipedItemIconSecondaryDrawableId = state.getInt(BEHIND_SWIPED_ITEM_ICON_SECONDARY_DRAWABLE_ID_KEY, 0)

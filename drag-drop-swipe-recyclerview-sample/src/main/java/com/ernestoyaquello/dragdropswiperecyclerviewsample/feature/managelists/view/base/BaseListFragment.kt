@@ -2,6 +2,7 @@ package com.ernestoyaquello.dragdropswiperecyclerviewsample.feature.managelists.
 
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.*
 import android.widget.FrameLayout
@@ -71,12 +72,12 @@ abstract class BaseListFragment : Fragment() {
     val onListScrollListener = object : OnListScrollListener {
         override fun onListScrollStateChanged(scrollState: OnListScrollListener.ScrollState) {
             // Call commented out to avoid saturating the log
-            //Logger.log("List scroll state changed to $scrollState")
+            //Log.v("bob","List scroll state changed to $scrollState")
         }
 
         override fun onListScrolled(scrollDirection: OnListScrollListener.ScrollDirection, distance: Int) {
             // Call commented out to avoid saturating the log
-            //Logger.log("List scrolled $distance pixels $scrollDirection")
+            Log.v("bob","List scrolled To $scrollDirection")
         }
     }
 

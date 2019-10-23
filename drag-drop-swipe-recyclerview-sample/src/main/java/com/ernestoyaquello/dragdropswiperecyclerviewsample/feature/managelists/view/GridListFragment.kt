@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.ernestoyaquello.dragdropswiperecyclerview.DragDropSwipeRecyclerView
 import com.ernestoyaquello.dragdropswiperecyclerviewsample.R
 import com.ernestoyaquello.dragdropswiperecyclerviewsample.config.local.currentListFragmentConfig
@@ -36,20 +35,18 @@ class GridListFragment : BaseListFragment() {
         list.swipeListener = onItemSwipeListener
         list.dragListener = onItemDragListener
         list.scrollListener = onListScrollListener
+        list.orientation
 
         list.layoutManager = GridLayoutManager(activity, numberOfColumns)
 
         setupListOrientation()
-        setupListItemLayout()
         setupLayoutBehindItemLayoutOnSwiping()
         setupFadeItemLayoutOnSwiping()
 
         return binding.root
     }
 
-
-
-     private fun setupListOrientation() {
+    private fun setupListOrientation() {
         // It is necessary to set the orientation in code so the list can work correctly.
         // Horizontal swiping is specified because this grid list is vertically scrollable.
         // For horizontally scrollable grid lists, vertical swiping should be used instead.
@@ -59,30 +56,7 @@ class GridListFragment : BaseListFragment() {
         list.numOfColumnsPerRowInGridList = numberOfColumns
     }
 
-     fun setupListItemLayout() {
-        if (currentListFragmentConfig.isUsingStandardItemLayout)
-            setStandardItemLayoutAndDivider()
-        else
-            setCardViewItemLayoutAndNoDivider()
-    }
-
-    private fun setStandardItemLayoutAndDivider() {
-        // In XML: app:item_layout="@layout/list_item_grid_list"
-        list.itemLayoutId = R.layout.list_item_grid_list
-
-        // In XML: app:divider="@drawable/divider_grid_list"
-        list.dividerDrawableId = R.drawable.divider_grid_list
-    }
-
-    private fun setCardViewItemLayoutAndNoDivider() {
-        // In XML: app:item_layout="@layout/list_item_grid_list_cardview"
-        list.itemLayoutId = R.layout.list_item_grid_list_cardview
-
-        // In XML: app:divider="@null"
-        list.dividerDrawableId = null
-    }
-
-     private fun setupLayoutBehindItemLayoutOnSwiping() {
+    private fun setupLayoutBehindItemLayoutOnSwiping() {
         // We set to null all the properties that can be used to display something behind swiped items
         // In XML: app:behind_swiped_item_bg_color="@null"
         list.behindSwipedItemBackgroundColor = null
@@ -130,7 +104,7 @@ class GridListFragment : BaseListFragment() {
             }
     }
 
-     private fun setupFadeItemLayoutOnSwiping() {
+    private fun setupFadeItemLayoutOnSwiping() {
         // In XML: app:swiped_item_opacity_fades_on_swiping="true/false"
         list.reduceItemAlphaOnSwiping = currentListFragmentConfig.isUsingFadeOnSwipedItems
     }

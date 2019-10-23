@@ -12,7 +12,9 @@ interface OnListScrollListener {
         UP,
         DOWN,
         LEFT,
-        RIGHT
+        RIGHT,
+        TOP,
+        BOTTOM
     }
 
     /**
