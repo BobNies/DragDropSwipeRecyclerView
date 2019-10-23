@@ -10,7 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.movemedical.recyclerview.sample.ListFragmentType
 import com.movemedical.recyclerview.sample.currentListFragmentType
-import com.movemedical.recyclerview.sample.persist.IceCreamRepository
+import com.movemedical.recyclerview.sample.persist.SampleItemRepository
 import com.movemedical.recyclerview.sample.databinding.ActivityMainBinding
 import com.movemedical.recyclerview.sample.util.Logger
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -160,6 +160,6 @@ class MainActivity : AppCompatActivity() {
         if (isLogFragmentOpen())
             Logger.reset()
         else
-            IceCreamRepository.getInstance().generateNewItem()
+            SampleItemRepository.getInstance().generateNewItem()
     }
 }

@@ -1,11 +1,10 @@
 package com.movemedical.recyclerview.sample.model
 
-class IceCream(
+data class SampleItem(
         val name: String,
         val price: Float,
         val colorRed: Float,
         val colorGreen: Float,
-        val colorBlue: Float) {
-
-    override fun toString() = name
-}
+        val colorBlue: Float,
+        val isHeader: Boolean = false
+)

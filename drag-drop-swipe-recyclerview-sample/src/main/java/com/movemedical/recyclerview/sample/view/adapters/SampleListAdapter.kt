@@ -11,14 +11,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.movemedical.recyclerview.DragDropSwipeAdapter
 import com.movemedical.recyclerview.sample.R
-import com.movemedical.recyclerview.sample.model.IceCream
+import com.movemedical.recyclerview.sample.model.SampleItem
 import com.movemedical.recyclerview.sample.util.Logger
 
 /**
- * Adapter for a list of ice creams.
+ * Sample Adapter
  */
-class IceCreamListAdapter(dataSet: List<IceCream> = emptyList())
-    : DragDropSwipeAdapter<IceCream, IceCreamListAdapter.ViewHolder>(dataSet) {
+class SampleListAdapter(dataSet: List<SampleItem> = emptyList())
+    : DragDropSwipeAdapter<SampleItem, SampleListAdapter.ViewHolder>(dataSet) {
 
     class ViewHolder(iceCreamLayout: View) : DragDropSwipeAdapter.ViewHolder(iceCreamLayout) {
         val iceCreamNameView: TextView = itemView.findViewById(R.id.ice_cream_name)
@@ -35,7 +35,7 @@ class IceCreamListAdapter(dataSet: List<IceCream> = emptyList())
             return ViewHolder(itemLayout)
     }
 
-    override fun onBindViewHolder(item: IceCream, viewHolder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(item: SampleItem, viewHolder: ViewHolder, position: Int) {
         val context = viewHolder.itemView.context
 
         // Set ice cream name and price
@@ -57,18 +57,18 @@ class IceCreamListAdapter(dataSet: List<IceCream> = emptyList())
         }
     }
 
-    override fun getViewToTouchToStartDraggingItem(item: IceCream, viewHolder: ViewHolder, position: Int) = viewHolder.dragIcon
+    override fun getViewToTouchToStartDraggingItem(item: SampleItem, viewHolder: ViewHolder, position: Int) = viewHolder.dragIcon
 
-    override fun onDragStarted(item: IceCream, viewHolder: ViewHolder) {
+    override fun onDragStarted(item: SampleItem, viewHolder: ViewHolder) {
         Logger.log("Dragging started on ${item.name}")
     }
 
-    override fun onSwipeStarted(item: IceCream, viewHolder: ViewHolder) {
+    override fun onSwipeStarted(item: SampleItem, viewHolder: ViewHolder) {
         Logger.log("Swiping started on ${item.name}")
     }
 
     override fun onIsDragging(
-            item: IceCream?,
+            item: SampleItem?,
             viewHolder: ViewHolder,
             offsetX: Int,
             offsetY: Int,
@@ -80,7 +80,7 @@ class IceCreamListAdapter(dataSet: List<IceCream> = emptyList())
     }
 
     override fun onIsSwiping(
-            item: IceCream?,
+            item: SampleItem?,
             viewHolder: ViewHolder,
             offsetX: Int,
             offsetY: Int,
@@ -91,7 +91,7 @@ class IceCreamListAdapter(dataSet: List<IceCream> = emptyList())
         //Logger.log("The ${if (isUserControlled) "User" else "System"} is swiping ${item?.name} (offset X: $offsetX, offset Y: $offsetY)")
     }
 
-    override fun onDragFinished(item: IceCream, viewHolder: ViewHolder) {
+    override fun onDragFinished(item: SampleItem, viewHolder: ViewHolder) {
         Logger.log("Dragging finished on ${item.name} (the item was dropped)")
     }
 

@@ -18,27 +18,27 @@ import com.movemedical.recyclerview.sample.R
 import com.movemedical.recyclerview.sample.ListFragmentType
 import com.movemedical.recyclerview.sample.currentListFragmentConfig
 import com.movemedical.recyclerview.sample.currentListFragmentType
-import com.movemedical.recyclerview.sample.model.IceCream
+import com.movemedical.recyclerview.sample.model.SampleItem
 import com.movemedical.recyclerview.sample.persist.BaseRepository
-import com.movemedical.recyclerview.sample.persist.IceCreamRepository
+import com.movemedical.recyclerview.sample.persist.SampleItemRepository
 import com.movemedical.recyclerview.sample.util.Logger
-import com.movemedical.recyclerview.sample.view.adapters.IceCreamListAdapter
+import com.movemedical.recyclerview.sample.view.adapters.SampleListAdapter
 
 /**
  * The base implementation of a fragment that displays a list of ice creams.
  */
 abstract class BaseListFragment : Fragment() {
 
-    val adapter = IceCreamListAdapter()
-    private val repository = IceCreamRepository.getInstance()
+    val adapter = SampleListAdapter()
+    private val repository = SampleItemRepository.getInstance()
 
     lateinit var list: DragDropSwipeRecyclerView
     lateinit var loadingIndicator: ProgressBar
 
     protected abstract val optionsMenuId: Int
 
-    val onItemSwipeListener = object : OnItemSwipeListener<IceCream> {
-        override fun onItemSwiped(position: Int, direction: OnItemSwipeListener.SwipeDirection, item: IceCream): Boolean {
+    val onItemSwipeListener = object : OnItemSwipeListener<SampleItem> {
+        override fun onItemSwiped(position: Int, direction: OnItemSwipeListener.SwipeDirection, item: SampleItem): Boolean {
             when (direction) {
                 OnItemSwipeListener.SwipeDirection.RIGHT_TO_LEFT -> onItemSwipedLeft(item, position)
                 OnItemSwipeListener.SwipeDirection.LEFT_TO_RIGHT -> onItemSwipedRight(item, position)
@@ -50,12 +50,12 @@ abstract class BaseListFragment : Fragment() {
         }
     }
 
-    val onItemDragListener = object : OnItemDragListener<IceCream> {
-        override fun onItemDragged(previousPosition: Int, newPosition: Int, item: IceCream) {
+    val onItemDragListener = object : OnItemDragListener<SampleItem> {
+        override fun onItemDragged(previousPosition: Int, newPosition: Int, item: SampleItem) {
             Logger.log("$item is being dragged from position $previousPosition to position $newPosition")
         }
 
-        override fun onItemDropped(initialPosition: Int, finalPosition: Int, item: IceCream) {
+        override fun onItemDropped(initialPosition: Int, finalPosition: Int, item: SampleItem) {
             if (initialPosition != finalPosition) {
                 Logger.log("$item moved (dragged from position $initialPosition and dropped in position $finalPosition)")
 
@@ -80,8 +80,8 @@ abstract class BaseListFragment : Fragment() {
         }
     }
 
-    val onItemAddedListener = object : BaseRepository.OnItemAdditionListener<IceCream> {
-        override fun onItemAdded(item: IceCream, position: Int) {
+    val onItemAddedListener = object : BaseRepository.OnItemAdditionListener<SampleItem> {
+        override fun onItemAdded(item: SampleItem, position: Int) {
             // Add the item to the adapter's data set if necessary
             if (!adapter.dataSet.contains(item)) {
                 Logger.log("Added new item $item")
@@ -213,43 +213,43 @@ abstract class BaseListFragment : Fragment() {
         adapter.dataSet = repository.getAllItems()
     }
 
-    private fun onItemSwipedLeft(item: IceCream, position: Int) {
+    private fun onItemSwipedLeft(item: SampleItem, position: Int) {
         Logger.log("$item (position $position) swiped to the left")
 
         removeItem(item, position)
     }
 
-    private fun onItemSwipedRight(item: IceCream, position: Int) {
+    private fun onItemSwipedRight(item: SampleItem, position: Int) {
         Logger.log("$item (position $position) swiped to the right")
 
         archiveItem(item, position)
     }
 
-    private fun onItemSwipedUp(item: IceCream, position: Int) {
+    private fun onItemSwipedUp(item: SampleItem, position: Int) {
         Logger.log("$item (position $position) swiped up")
 
         archiveItem(item, position)
     }
 
-    private fun onItemSwipedDown(item: IceCream, position: Int) {
+    private fun onItemSwipedDown(item: SampleItem, position: Int) {
         Logger.log("$item (position $position) swiped down")
 
         removeItem(item, position)
     }
 
-    private fun removeItem(item: IceCream, position: Int) {
+    private fun removeItem(item: SampleItem, position: Int) {
         Logger.log("Removed item $item")
 
         removeItemFromList(item, position, R.string.itemRemovedMessage)
     }
 
-    private fun archiveItem(item: IceCream, position: Int) {
+    private fun archiveItem(item: SampleItem, position: Int) {
         Logger.log("Archived item $item")
 
         removeItemFromList(item, position, R.string.itemArchivedMessage)
     }
 
-    private fun removeItemFromList(item: IceCream, position: Int, stringResourceId: Int) {
+    private fun removeItemFromList(item: SampleItem, position: Int, stringResourceId: Int) {
         repository.removeItem(item)
 
         val itemSwipedSnackBar = Snackbar.make(view!!, getString(stringResourceId, item), Snackbar.LENGTH_SHORT)
