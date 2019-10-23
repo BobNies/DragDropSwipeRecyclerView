@@ -1,4 +1,4 @@
-package com.movemedical.recyclerview.sample.feature.managelists.view.base
+package com.movemedical.recyclerview.sample.view.ui
 
 import android.os.Bundle
 import android.os.Handler
@@ -9,23 +9,20 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
+import com.google.android.material.snackbar.Snackbar
 import com.movemedical.recyclerview.DragDropSwipeRecyclerView
 import com.movemedical.recyclerview.listener.OnItemDragListener
 import com.movemedical.recyclerview.listener.OnItemSwipeListener
 import com.movemedical.recyclerview.listener.OnListScrollListener
 import com.movemedical.recyclerview.sample.R
-import com.movemedical.recyclerview.sample.config.local.ListFragmentType
-import com.movemedical.recyclerview.sample.config.local.currentListFragmentConfig
-import com.movemedical.recyclerview.sample.config.local.currentListFragmentType
-import com.movemedical.recyclerview.sample.data.model.IceCream
-import com.movemedical.recyclerview.sample.data.source.IceCreamRepository
-import com.movemedical.recyclerview.sample.data.source.base.BaseRepository
-import com.movemedical.recyclerview.sample.feature.managelists.IceCreamListAdapter
-import com.movemedical.recyclerview.sample.feature.managelists.view.GridListFragment
-import com.movemedical.recyclerview.sample.feature.managelists.view.HorizontalListFragment
-import com.movemedical.recyclerview.sample.feature.managelists.view.VerticalListFragment
+import com.movemedical.recyclerview.sample.ListFragmentType
+import com.movemedical.recyclerview.sample.currentListFragmentConfig
+import com.movemedical.recyclerview.sample.currentListFragmentType
+import com.movemedical.recyclerview.sample.model.IceCream
+import com.movemedical.recyclerview.sample.persist.BaseRepository
+import com.movemedical.recyclerview.sample.persist.IceCreamRepository
 import com.movemedical.recyclerview.sample.util.Logger
-import com.google.android.material.snackbar.Snackbar
+import com.movemedical.recyclerview.sample.view.adapters.IceCreamListAdapter
 
 /**
  * The base implementation of a fragment that displays a list of ice creams.
@@ -79,7 +76,7 @@ abstract class BaseListFragment : Fragment() {
 
         override fun onListScrolled(scrollDirection: OnListScrollListener.ScrollDirection, distance: Int) {
             // Call commented out to avoid saturating the log
-            Log.v("bob","List scrolled To $scrollDirection")
+            Log.v("bob", "List scrolled To $scrollDirection")
         }
     }
 

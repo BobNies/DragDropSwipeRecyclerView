@@ -1,4 +1,4 @@
-package com.movemedical.recyclerview.sample
+package com.movemedical.recyclerview.sample.view.ui
 
 import android.graphics.Color
 import android.os.Bundle
@@ -8,15 +8,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import com.movemedical.recyclerview.sample.config.local.ListFragmentType
-import com.movemedical.recyclerview.sample.config.local.currentListFragmentType
-import com.movemedical.recyclerview.sample.data.source.IceCreamRepository
+import com.movemedical.recyclerview.sample.ListFragmentType
+import com.movemedical.recyclerview.sample.currentListFragmentType
+import com.movemedical.recyclerview.sample.persist.IceCreamRepository
 import com.movemedical.recyclerview.sample.databinding.ActivityMainBinding
-import com.movemedical.recyclerview.sample.feature.managelists.view.GridListFragment
-import com.movemedical.recyclerview.sample.feature.managelists.view.HorizontalListFragment
-import com.movemedical.recyclerview.sample.feature.managelists.view.VerticalListFragment
-import com.movemedical.recyclerview.sample.feature.managelists.view.base.BaseListFragment
-import com.movemedical.recyclerview.sample.feature.managelog.view.LogFragment
 import com.movemedical.recyclerview.sample.util.Logger
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.movemedical.recyclerview.sample.R

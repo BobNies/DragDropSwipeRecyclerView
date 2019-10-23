@@ -1,4 +1,4 @@
-package com.movemedical.recyclerview.sample.feature.managelists
+package com.movemedical.recyclerview.sample.view.adapters
 
 import android.content.res.ColorStateList
 import android.graphics.Canvas
@@ -11,7 +11,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.movemedical.recyclerview.DragDropSwipeAdapter
 import com.movemedical.recyclerview.sample.R
-import com.movemedical.recyclerview.sample.data.model.IceCream
+import com.movemedical.recyclerview.sample.model.IceCream
 import com.movemedical.recyclerview.sample.util.Logger
 
 /**

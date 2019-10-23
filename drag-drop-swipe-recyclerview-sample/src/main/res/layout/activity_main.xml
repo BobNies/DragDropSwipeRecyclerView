@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context="com.movemedical.recyclerview.sample.MainActivity">
+        tools:context="com.movemedical.recyclerview.sample.view.ui.MainActivity">
 
         <FrameLayout
             android:id="@+id/see_log_button"

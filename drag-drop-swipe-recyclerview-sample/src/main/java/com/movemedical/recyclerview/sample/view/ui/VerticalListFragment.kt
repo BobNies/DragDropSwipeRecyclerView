@@ -1,4 +1,4 @@
-package com.movemedical.recyclerview.sample.feature.managelists.view
+package com.movemedical.recyclerview.sample.view.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,25 +7,22 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.movemedical.recyclerview.DragDropSwipeRecyclerView
 import com.movemedical.recyclerview.sample.R
-import com.movemedical.recyclerview.sample.config.local.currentListFragmentConfig
-import com.movemedical.recyclerview.sample.databinding.FragmentHorizontalListBinding
-import com.movemedical.recyclerview.sample.feature.managelists.view.base.BaseListFragment
+import com.movemedical.recyclerview.sample.currentListFragmentConfig
+import com.movemedical.recyclerview.sample.databinding.FragmentVerticalListBinding
 
+class VerticalListFragment : BaseListFragment() {
 
-class HorizontalListFragment : BaseListFragment() {
-
-    private lateinit var binding: FragmentHorizontalListBinding
-    override val optionsMenuId = R.menu.fragment_horizontal_list_options
+    private lateinit var binding: FragmentVerticalListBinding
+    override val optionsMenuId = R.menu.fragment_vertical_list_options
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?): View? {
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_horizontal_list, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_vertical_list, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
 
         loadingIndicator = binding.loadingIndicator
@@ -36,14 +33,13 @@ class HorizontalListFragment : BaseListFragment() {
         list.dragListener = onItemDragListener
         list.scrollListener = onListScrollListener
 
-        list.layoutManager = LinearLayoutManager(activity, RecyclerView.HORIZONTAL, false)
+        list.layoutManager = LinearLayoutManager(activity)
         list.reduceItemAlphaOnSwiping = currentListFragmentConfig.isUsingFadeOnSwipedItems
 
         list.orientation = if (currentListFragmentConfig.isRestrictingDraggingDirections) {
-
-            DragDropSwipeRecyclerView.ListOrientation.HORIZONTAL_LIST_WITH_HORIZONTAL_DRAGGING
+            DragDropSwipeRecyclerView.ListOrientation.VERTICAL_LIST_WITH_VERTICAL_DRAGGING
         } else {
-            DragDropSwipeRecyclerView.ListOrientation.HORIZONTAL_LIST_WITH_UNCONSTRAINED_DRAGGING
+            DragDropSwipeRecyclerView.ListOrientation.VERTICAL_LIST_WITH_UNCONSTRAINED_DRAGGING
         }
 
         setupLayoutBehindItemLayoutOnSwiping()
@@ -87,20 +83,19 @@ class HorizontalListFragment : BaseListFragment() {
                 // In XML: app:behind_swiped_item_bg_color_secondary="@color/swipeBehindBackgroundSecondary"
                 list.behindSwipedItemBackgroundSecondaryColor = ContextCompat.getColor(currentContext, R.color.swipeBehindBackgroundSecondary)
 
-                // In XML: app:behind_swiped_item_icon_centered="true"
-                list.behindSwipedItemCenterIcon = true
+                // In XML: app:behind_swiped_item_icon_margin="@dimen/spacing_normal"
+                list.behindSwipedItemIconMargin = resources.getDimension(R.dimen.spacing_normal)
             } else {
                 // We set our custom layouts to be displayed behind swiped items
-                // In XML: app:behind_swiped_item_custom_layout="@layout/behind_swiped_horizontal_list"
-                list.behindSwipedItemLayoutId = R.layout.behind_swiped_horizontal_list
+                // In XML: app:behind_swiped_item_custom_layout="@layout/behind_swiped_vertical_list"
+                list.behindSwipedItemLayoutId = R.layout.behind_swiped_vertical_list
 
-                // In XML: app:behind_swiped_item_custom_layout_secondary="@layout/behind_swiped_horizontal_list_secondary"
-                list.behindSwipedItemSecondaryLayoutId = R.layout.behind_swiped_horizontal_list_secondary
+                // In XML: app:behind_swiped_item_custom_layout_secondary="@layout/behind_swiped_vertical_list_secondary"
+                list.behindSwipedItemSecondaryLayoutId = R.layout.behind_swiped_vertical_list_secondary
             }
     }
 
-
     companion object {
-        fun newInstance() = HorizontalListFragment()
+        fun newInstance() = VerticalListFragment()
     }
 }

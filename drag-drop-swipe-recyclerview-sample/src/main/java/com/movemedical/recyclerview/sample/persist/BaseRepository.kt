@@ -1,4 +1,4 @@
-package com.movemedical.recyclerview.sample.data.source.base
+package com.movemedical.recyclerview.sample.persist
 
 /**
  * This is a dummy implementation of a repository to be used by the app to add and retrieve items.

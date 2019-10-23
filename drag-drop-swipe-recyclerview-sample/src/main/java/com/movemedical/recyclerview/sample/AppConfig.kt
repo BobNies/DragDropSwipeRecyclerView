@@ -1,4 +1,4 @@
-package com.movemedical.recyclerview.sample.config.local
+package com.movemedical.recyclerview.sample
 
 enum class ListFragmentType(val index: Int, val tag: String) {
     VERTICAL(0, "VerticalFragment"),

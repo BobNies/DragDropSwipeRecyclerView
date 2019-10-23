@@ -1,4 +1,4 @@
-package com.movemedical.recyclerview.sample.data.model
+package com.movemedical.recyclerview.sample.model
 
 class IceCream(
         val name: String,

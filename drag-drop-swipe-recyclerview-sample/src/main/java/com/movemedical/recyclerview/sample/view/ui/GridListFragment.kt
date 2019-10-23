@@ -1,4 +1,4 @@
-package com.movemedical.recyclerview.sample.feature.managelists.view
+package com.movemedical.recyclerview.sample.view.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,8 +11,7 @@ import com.movemedical.recyclerview.sample.databinding.FragmentGridListBinding
 import com.movemedical.recyclerview.DragDropSwipeRecyclerView
 import com.movemedical.recyclerview.sample.R
 
-import com.movemedical.recyclerview.sample.config.local.currentListFragmentConfig
-import com.movemedical.recyclerview.sample.feature.managelists.view.base.BaseListFragment
+import com.movemedical.recyclerview.sample.currentListFragmentConfig
 
 class GridListFragment : BaseListFragment() {
 

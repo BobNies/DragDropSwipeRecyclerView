@@ -1,4 +1,4 @@
-package com.movemedical.recyclerview.sample.feature.managelog.view
+package com.movemedical.recyclerview.sample.view.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

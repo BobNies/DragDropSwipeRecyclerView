@@ -1,7 +1,7 @@
-package com.movemedical.recyclerview.sample.data.source
+package com.movemedical.recyclerview.sample.persist
 
-import com.movemedical.recyclerview.sample.data.model.IceCream
-import com.movemedical.recyclerview.sample.data.source.base.BaseRepository
+import com.movemedical.recyclerview.sample.model.IceCream
+
 import java.util.*
 
 /**
