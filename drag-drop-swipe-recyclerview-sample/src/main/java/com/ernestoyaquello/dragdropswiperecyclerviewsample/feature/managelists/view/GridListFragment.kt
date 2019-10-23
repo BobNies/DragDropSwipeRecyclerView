@@ -1,10 +1,17 @@
 package com.ernestoyaquello.dragdropswiperecyclerviewsample.feature.managelists.view
 
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.ernestoyaquello.dragdropswiperecyclerview.DragDropSwipeRecyclerView
 import com.ernestoyaquello.dragdropswiperecyclerviewsample.R
 import com.ernestoyaquello.dragdropswiperecyclerviewsample.config.local.currentListFragmentConfig
+import com.ernestoyaquello.dragdropswiperecyclerviewsample.databinding.FragmentGridListBinding
 import com.ernestoyaquello.dragdropswiperecyclerviewsample.feature.managelists.view.base.BaseListFragment
 
 /**
@@ -12,17 +19,40 @@ import com.ernestoyaquello.dragdropswiperecyclerviewsample.feature.managelists.v
  */
 class GridListFragment : BaseListFragment() {
 
+    private lateinit var binding: FragmentGridListBinding
     private val numberOfColumns = 2
 
-    override val fragmentLayoutId = R.layout.fragment_grid_list
     override val optionsMenuId = R.menu.fragment_grid_list_options
 
-    override fun setupListLayoutManager(list: DragDropSwipeRecyclerView) {
-        // Set grid linear layout manager
+    override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?): View? {
+
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_grid_list, container, false)
+        binding.lifecycleOwner = viewLifecycleOwner
+
+        loadingIndicator = binding.loadingIndicator
+
+        list = binding.list
+        list.adapter = adapter
+        list.swipeListener = onItemSwipeListener
+        list.dragListener = onItemDragListener
+        list.scrollListener = onListScrollListener
+
         list.layoutManager = GridLayoutManager(activity, numberOfColumns)
+
+        setupListOrientation()
+        setupListItemLayout()
+        setupLayoutBehindItemLayoutOnSwiping()
+        setupFadeItemLayoutOnSwiping()
+
+        return binding.root
     }
 
-    override fun setupListOrientation(list: DragDropSwipeRecyclerView) {
+
+
+     private fun setupListOrientation() {
         // It is necessary to set the orientation in code so the list can work correctly.
         // Horizontal swiping is specified because this grid list is vertically scrollable.
         // For horizontally scrollable grid lists, vertical swiping should be used instead.
@@ -32,14 +62,14 @@ class GridListFragment : BaseListFragment() {
         list.numOfColumnsPerRowInGridList = numberOfColumns
     }
 
-    override fun setupListItemLayout(list: DragDropSwipeRecyclerView) {
+     fun setupListItemLayout() {
         if (currentListFragmentConfig.isUsingStandardItemLayout)
-            setStandardItemLayoutAndDivider(list)
+            setStandardItemLayoutAndDivider()
         else
-            setCardViewItemLayoutAndNoDivider(list)
+            setCardViewItemLayoutAndNoDivider()
     }
 
-    private fun setStandardItemLayoutAndDivider(list: DragDropSwipeRecyclerView) {
+    private fun setStandardItemLayoutAndDivider() {
         // In XML: app:item_layout="@layout/list_item_grid_list"
         list.itemLayoutId = R.layout.list_item_grid_list
 
@@ -47,7 +77,7 @@ class GridListFragment : BaseListFragment() {
         list.dividerDrawableId = R.drawable.divider_grid_list
     }
 
-    private fun setCardViewItemLayoutAndNoDivider(list: DragDropSwipeRecyclerView) {
+    private fun setCardViewItemLayoutAndNoDivider() {
         // In XML: app:item_layout="@layout/list_item_grid_list_cardview"
         list.itemLayoutId = R.layout.list_item_grid_list_cardview
 
@@ -55,7 +85,7 @@ class GridListFragment : BaseListFragment() {
         list.dividerDrawableId = null
     }
 
-    override fun setupLayoutBehindItemLayoutOnSwiping(list: DragDropSwipeRecyclerView) {
+     private fun setupLayoutBehindItemLayoutOnSwiping() {
         // We set to null all the properties that can be used to display something behind swiped items
         // In XML: app:behind_swiped_item_bg_color="@null"
         list.behindSwipedItemBackgroundColor = null
@@ -103,7 +133,7 @@ class GridListFragment : BaseListFragment() {
             }
     }
 
-    override fun setupFadeItemLayoutOnSwiping(list: DragDropSwipeRecyclerView) {
+     private fun setupFadeItemLayoutOnSwiping() {
         // In XML: app:swiped_item_opacity_fades_on_swiping="true/false"
         list.reduceItemAlphaOnSwiping = currentListFragmentConfig.isUsingFadeOnSwipedItems
     }

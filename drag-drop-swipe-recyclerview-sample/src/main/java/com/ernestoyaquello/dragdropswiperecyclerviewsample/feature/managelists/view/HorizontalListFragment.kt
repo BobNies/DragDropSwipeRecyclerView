@@ -1,11 +1,17 @@
 package com.ernestoyaquello.dragdropswiperecyclerviewsample.feature.managelists.view
 
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ernestoyaquello.dragdropswiperecyclerview.DragDropSwipeRecyclerView
 import com.ernestoyaquello.dragdropswiperecyclerviewsample.R
 import com.ernestoyaquello.dragdropswiperecyclerviewsample.config.local.currentListFragmentConfig
+import com.ernestoyaquello.dragdropswiperecyclerviewsample.databinding.FragmentHorizontalListBinding
 import com.ernestoyaquello.dragdropswiperecyclerviewsample.feature.managelists.view.base.BaseListFragment
 
 /**
@@ -13,46 +19,55 @@ import com.ernestoyaquello.dragdropswiperecyclerviewsample.feature.managelists.v
  */
 class HorizontalListFragment : BaseListFragment() {
 
-    override val fragmentLayoutId = R.layout.fragment_horizontal_list
+    private lateinit var binding: FragmentHorizontalListBinding
     override val optionsMenuId = R.menu.fragment_horizontal_list_options
 
-    override fun setupListLayoutManager(list: DragDropSwipeRecyclerView) {
-        // Set horizontal linear layout manager
+    override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?): View? {
+
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_horizontal_list, container, false)
+        binding.lifecycleOwner = viewLifecycleOwner
+
+        loadingIndicator = binding.loadingIndicator
+
+        list = binding.list
+        list.adapter = adapter
+        list.swipeListener = onItemSwipeListener
+        list.dragListener = onItemDragListener
+        list.scrollListener = onListScrollListener
+
         list.layoutManager = LinearLayoutManager(activity, RecyclerView.HORIZONTAL, false)
-    }
+        list.reduceItemAlphaOnSwiping = currentListFragmentConfig.isUsingFadeOnSwipedItems
 
-    override fun setupListOrientation(list: DragDropSwipeRecyclerView) {
-        // It is necessary to set the orientation in code so the list can work correctly
-        list.orientation = if (currentListFragmentConfig.isRestrictingDraggingDirections)
+        list.orientation = if (currentListFragmentConfig.isRestrictingDraggingDirections) {
+
             DragDropSwipeRecyclerView.ListOrientation.HORIZONTAL_LIST_WITH_HORIZONTAL_DRAGGING
-        else
+        } else {
             DragDropSwipeRecyclerView.ListOrientation.HORIZONTAL_LIST_WITH_UNCONSTRAINED_DRAGGING
+        }
+        if (currentListFragmentConfig.isUsingStandardItemLayout) {
+            setStandardItemLayoutAndDivider()
+        } else {
+            setCardViewItemLayoutAndNoDivider()
+        }
+        setupLayoutBehindItemLayoutOnSwiping()
+
+        return binding.root
     }
 
-    override fun setupListItemLayout(list: DragDropSwipeRecyclerView) {
-        if (currentListFragmentConfig.isUsingStandardItemLayout)
-            setStandardItemLayoutAndDivider(list)
-        else
-            setCardViewItemLayoutAndNoDivider(list)
-    }
-
-    private fun setStandardItemLayoutAndDivider(list: DragDropSwipeRecyclerView) {
-        // In XML: app:item_layout="@layout/list_item_horizontal_list"
+    private fun setStandardItemLayoutAndDivider() {
         list.itemLayoutId = R.layout.list_item_horizontal_list
-
-        // In XML: app:divider="@drawable/divider_horizontal_list"
         list.dividerDrawableId = R.drawable.divider_horizontal_list
     }
 
-    private fun setCardViewItemLayoutAndNoDivider(list: DragDropSwipeRecyclerView) {
-        // In XML: app:item_layout="@layout/list_item_horizontal_list_cardview"
+    private fun setCardViewItemLayoutAndNoDivider() {
         list.itemLayoutId = R.layout.list_item_horizontal_list_cardview
-
-        // In XML: app:divider="@null"
         list.dividerDrawableId = null
     }
 
-    override fun setupLayoutBehindItemLayoutOnSwiping(list: DragDropSwipeRecyclerView) {
+    private fun setupLayoutBehindItemLayoutOnSwiping() {
         // We set to null all the properties that can be used to display something behind swiped items
         // In XML: app:behind_swiped_item_bg_color="@null"
         list.behindSwipedItemBackgroundColor = null
@@ -100,10 +115,6 @@ class HorizontalListFragment : BaseListFragment() {
             }
     }
 
-    override fun setupFadeItemLayoutOnSwiping(list: DragDropSwipeRecyclerView) {
-        // In XML: app:swiped_item_opacity_fades_on_swiping="true/false"
-        list.reduceItemAlphaOnSwiping = currentListFragmentConfig.isUsingFadeOnSwipedItems
-    }
 
     companion object {
         fun newInstance() = HorizontalListFragment()

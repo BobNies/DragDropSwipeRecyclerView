@@ -29,17 +29,15 @@ import com.google.android.material.snackbar.Snackbar
  */
 abstract class BaseListFragment : Fragment() {
 
-    private val adapter = IceCreamListAdapter()
+    val adapter = IceCreamListAdapter()
     private val repository = IceCreamRepository.getInstance()
 
-    private lateinit var rootView: ViewGroup
-    private lateinit var list: DragDropSwipeRecyclerView
-    private lateinit var loadingIndicator: ProgressBar
+    lateinit var list: DragDropSwipeRecyclerView
+    lateinit var loadingIndicator: ProgressBar
 
-    protected abstract val fragmentLayoutId: Int
     protected abstract val optionsMenuId: Int
 
-    private val onItemSwipeListener = object : OnItemSwipeListener<IceCream> {
+    val onItemSwipeListener = object : OnItemSwipeListener<IceCream> {
         override fun onItemSwiped(position: Int, direction: OnItemSwipeListener.SwipeDirection, item: IceCream): Boolean {
             when (direction) {
                 OnItemSwipeListener.SwipeDirection.RIGHT_TO_LEFT -> onItemSwipedLeft(item, position)
@@ -52,7 +50,7 @@ abstract class BaseListFragment : Fragment() {
         }
     }
 
-    private val onItemDragListener = object : OnItemDragListener<IceCream> {
+    val onItemDragListener = object : OnItemDragListener<IceCream> {
         override fun onItemDragged(previousPosition: Int, newPosition: Int, item: IceCream) {
             Logger.log("$item is being dragged from position $previousPosition to position $newPosition")
         }
@@ -70,7 +68,7 @@ abstract class BaseListFragment : Fragment() {
         }
     }
 
-    private val onListScrollListener = object : OnListScrollListener {
+    val onListScrollListener = object : OnListScrollListener {
         override fun onListScrollStateChanged(scrollState: OnListScrollListener.ScrollState) {
             // Call commented out to avoid saturating the log
             //Logger.log("List scroll state changed to $scrollState")
@@ -82,7 +80,7 @@ abstract class BaseListFragment : Fragment() {
         }
     }
 
-    private val onItemAddedListener = object : BaseRepository.OnItemAdditionListener<IceCream> {
+    val onItemAddedListener = object : BaseRepository.OnItemAdditionListener<IceCream> {
         override fun onItemAdded(item: IceCream, position: Int) {
             // Add the item to the adapter's data set if necessary
             if (!adapter.dataSet.contains(item)) {
@@ -102,41 +100,6 @@ abstract class BaseListFragment : Fragment() {
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?): View? {
-
-        // Set root view for the fragment and find the views
-        rootView = inflater.inflate(fragmentLayoutId, container, false) as FrameLayout
-        list = rootView.findViewById(R.id.list)
-        loadingIndicator = rootView.findViewById(R.id.loading_indicator)
-
-        // Set adapter and listeners
-        list.adapter = adapter
-        list.swipeListener = onItemSwipeListener
-        list.dragListener = onItemDragListener
-        list.scrollListener = onListScrollListener
-
-        // Finish list setup
-        setupListLayoutManager(list)
-        setupListOrientation(list)
-        setupListItemLayout(list)
-        setupLayoutBehindItemLayoutOnSwiping(list)
-        setupFadeItemLayoutOnSwiping(list)
-
-        return rootView
-    }
-
-    protected abstract fun setupListLayoutManager(list: DragDropSwipeRecyclerView)
-
-    protected abstract fun setupListOrientation(list: DragDropSwipeRecyclerView)
-
-    protected abstract fun setupListItemLayout(list: DragDropSwipeRecyclerView)
-
-    protected abstract fun setupLayoutBehindItemLayoutOnSwiping(list: DragDropSwipeRecyclerView)
-
-    protected abstract fun setupFadeItemLayoutOnSwiping(list: DragDropSwipeRecyclerView)
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) = inflater.inflate(optionsMenuId, menu)
 
@@ -289,7 +252,7 @@ abstract class BaseListFragment : Fragment() {
     private fun removeItemFromList(item: IceCream, position: Int, stringResourceId: Int) {
         repository.removeItem(item)
 
-        val itemSwipedSnackBar = Snackbar.make(rootView, getString(stringResourceId, item), Snackbar.LENGTH_SHORT)
+        val itemSwipedSnackBar = Snackbar.make(view!!, getString(stringResourceId, item), Snackbar.LENGTH_SHORT)
         itemSwipedSnackBar.setAction(getString(R.string.undoCaps)) {
             Logger.log("UNDO: $item has been added back to the list in the position $position")
 
