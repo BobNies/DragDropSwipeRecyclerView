@@ -7,7 +7,7 @@ android {
     compileSdkVersion 29
 
     defaultConfig {
-        applicationId "com.ernestoyaquello.dragdropswiperecyclerviewsample"
+        applicationId "com.movemedical.recyclerview.sample"
         minSdkVersion 24
         targetSdkVersion 29
         versionCode 1
@@ -24,6 +24,10 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    lintOptions {
+        disable 'GoogleAppIndexingWarning'
     }
 
     dataBinding {
