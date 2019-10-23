@@ -17,7 +17,7 @@ import com.movemedical.recyclerview.util.drawVerticalDividers
 import kotlin.math.abs
 
 /**
- * Needs to be implemented by any adapter to be used within a DragDropSwipeRecyclerView.
+ * Needs to be implemented by any adapter to be used within a MoveRecyclerView.
  *
  * @param T The type of the item.
  * @param U The type of the view holder.
@@ -39,7 +39,7 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
 
     private val orientation: DragDropSwipeRecyclerView.ListOrientation
         get() = recyclerView?.orientation
-                ?: throw NullPointerException("The orientation of the DragDropSwipeRecyclerView is not defined.")
+                ?: throw NullPointerException("The orientation of the MoveRecyclerView is not defined.")
 
     /**
      * The view holder abstract type whose implementation should be used in the implementation
@@ -392,7 +392,7 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
             this.recyclerView = recyclerView
             itemTouchHelper.attachToRecyclerView(recyclerView)
             swipeAndDragHelper.recyclerView = recyclerView
-        } else throw TypeCastException("The recycler view must be an extension of DragDropSwipeRecyclerView.")
+        } else throw TypeCastException("The recycler view must be an extension of MoveRecyclerView.")
     }
 
     override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
@@ -401,7 +401,7 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
         if (recyclerView is DragDropSwipeRecyclerView) {
             this.recyclerView = null
             swipeAndDragHelper.recyclerView = null
-        } else throw TypeCastException("The recycler view must be an extension of DragDropSwipeRecyclerView.")
+        } else throw TypeCastException("The recycler view must be an extension of MoveRecyclerView.")
     }
 
     fun addItem(item: T) {

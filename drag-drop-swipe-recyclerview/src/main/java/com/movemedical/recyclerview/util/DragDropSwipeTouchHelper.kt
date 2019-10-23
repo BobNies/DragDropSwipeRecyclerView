@@ -75,7 +75,7 @@ internal class DragDropSwipeTouchHelper(
             val currentOrientation = orientation
             if (currentOrientation != null)
                 return currentOrientation
-            else throw NullPointerException("The orientation of the DragDropSwipeRecyclerView is not defined.")
+            else throw NullPointerException("The orientation of the MoveRecyclerView is not defined.")
         }
 
     private var isDragging = false
