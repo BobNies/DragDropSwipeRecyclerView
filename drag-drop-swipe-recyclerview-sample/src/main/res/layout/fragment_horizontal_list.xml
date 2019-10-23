@@ -15,8 +15,8 @@
             android:visibility="gone"
             app:behind_swiped_item_custom_layout="@layout/behind_swiped_horizontal_list"
             app:behind_swiped_item_custom_layout_secondary="@layout/behind_swiped_horizontal_list_secondary"
-            app:item_layout="@layout/list_item_horizontal_list_cardview"
-            app:swiped_item_opacity_fades_on_swiping="true" />
+            app:swiped_item_opacity_fades_on_swiping="true"
+            tools:listitem="@layout/list_item_horizontal_list_cardview" />
 
         <ProgressBar
             android:id="@+id/loading_indicator"

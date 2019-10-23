@@ -20,7 +20,7 @@
             app:behind_swiped_item_icon_margin="@dimen/spacing_normal"
             app:behind_swiped_item_icon_secondary="@drawable/ic_archive_item"
             app:divider="@drawable/divider_vertical_list"
-            app:item_layout="@layout/list_item_vertical_list" />
+            tools:listitem="@layout/list_item_vertical_list" />
 
         <ProgressBar
             android:id="@+id/loading_indicator"

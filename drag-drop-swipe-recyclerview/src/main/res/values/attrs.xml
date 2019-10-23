@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="DragDropSwipeRecyclerView">
-        <attr name="item_layout" format="reference" />
         <attr name="divider" format="reference" />
         <attr name="behind_swiped_item_icon" format="reference" />
         <attr name="behind_swiped_item_icon_secondary" format="reference" />
