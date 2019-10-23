@@ -13,9 +13,6 @@ import com.ernestoyaquello.dragdropswiperecyclerviewsample.config.local.currentL
 import com.ernestoyaquello.dragdropswiperecyclerviewsample.databinding.FragmentVerticalListBinding
 import com.ernestoyaquello.dragdropswiperecyclerviewsample.feature.managelists.view.base.BaseListFragment
 
-/**
- * This fragment shows a vertical list of ice creams.
- */
 class VerticalListFragment : BaseListFragment() {
 
     private lateinit var binding: FragmentVerticalListBinding

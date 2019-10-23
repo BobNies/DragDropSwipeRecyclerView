@@ -10,9 +10,11 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 import com.ernestoyaquello.dragdropswiperecyclerviewsample.config.local.ListFragmentType
 import com.ernestoyaquello.dragdropswiperecyclerviewsample.config.local.currentListFragmentType
 import com.ernestoyaquello.dragdropswiperecyclerviewsample.data.source.IceCreamRepository
+import com.ernestoyaquello.dragdropswiperecyclerviewsample.databinding.ActivityMainBinding
 import com.ernestoyaquello.dragdropswiperecyclerviewsample.feature.managelists.view.GridListFragment
 import com.ernestoyaquello.dragdropswiperecyclerviewsample.feature.managelists.view.HorizontalListFragment
 import com.ernestoyaquello.dragdropswiperecyclerviewsample.feature.managelists.view.VerticalListFragment
@@ -27,41 +29,17 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
  */
 class MainActivity : AppCompatActivity() {
 
-    private var logButtonTextView: TextView? = null
-    private var logButtonLayout: FrameLayout? = null
-    private var fab: FloatingActionButton? = null
-    private var bottomNavigation: BottomNavigationView? = null
-
-    private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-        if (tryNavigateToListFragment(item.itemId))
-            return@OnNavigationItemSelectedListener true
-
-        false
-    }
-
-    private val onLogButtonClickedListener = View.OnClickListener {
-        navigateToLogFragment()
-    }
-
-    private val onLogUpdatedListener = object: Logger.OnLogUpdateListener {
-        override fun onLogUpdated() = refreshLogButtonText()
-    }
-
-    private val onFabClickedListener = View.OnClickListener {
-        // When in the log fragment, the FAB clears the log; when in a list fragment, it adds an item
-        if (isLogFragmentOpen())
-            Logger.reset()
-        else
-            IceCreamRepository.getInstance().generateNewItem()
-    }
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(
+                this,
+                R.layout.activity_main
+        )
         supportActionBar?.elevation = 0f
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            window.navigationBarColor = Color.BLACK
+        window.navigationBarColor = Color.BLACK
 
         setupLog()
         setupBottomNavigation()
@@ -71,30 +49,25 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupLog() {
-        // Find log-related views
-        logButtonLayout = findViewById(R.id.see_log_button)
-        logButtonTextView = findViewById(R.id.see_log_button_text)
 
         // Initialise log and subscribe to log changes
         Logger.init(onLogUpdatedListener)
 
         // If the user clicks on the log button, we open the log fragment
-        logButtonLayout?.setOnClickListener(onLogButtonClickedListener)
+        binding.seeLogButton?.setOnClickListener(onLogButtonClickedListener)
     }
 
     private fun setupBottomNavigation() {
-        bottomNavigation = findViewById(R.id.navigation)
-        bottomNavigation?.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
+        binding.navigation?.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
     }
 
     private fun setupFab() {
-        fab = findViewById(R.id.fab)
-        fab?.setOnClickListener(onFabClickedListener)
+        binding.fab?.setOnClickListener(onFabClickedListener)
     }
 
     private fun refreshLogButtonText() {
         val numItemsOnLog = Logger.instance?.messages?.size ?: 0
-        logButtonTextView?.text = getString(R.string.seeLogMessagesTitle, numItemsOnLog)
+        binding.seeLogButtonText?.text = getString(R.string.seeLogMessagesTitle, numItemsOnLog)
     }
 
     private fun tryNavigateToListFragment(itemId: Int): Boolean {
@@ -134,15 +107,15 @@ class MainActivity : AppCompatActivity() {
     private fun onNavigatedToListFragment() {
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
         supportActionBar?.setHomeButtonEnabled(false)
-        logButtonLayout?.visibility = View.VISIBLE
-        fab?.setImageDrawable(AppCompatResources.getDrawable(applicationContext, R.drawable.ic_new_item))
+        binding.seeLogButton?.visibility = View.VISIBLE
+        binding.fab?.setImageDrawable(AppCompatResources.getDrawable(applicationContext, R.drawable.ic_new_item))
     }
 
     private fun onNavigatedToLogFragment() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
-        logButtonLayout?.visibility = View.GONE
-        fab?.setImageDrawable(AppCompatResources.getDrawable(applicationContext, R.drawable.ic_clear_items))
+        binding.seeLogButton?.visibility = View.GONE
+        binding.fab?.setImageDrawable(AppCompatResources.getDrawable(applicationContext, R.drawable.ic_clear_items))
     }
 
     private fun isLogFragmentOpen() = supportFragmentManager.findFragmentByTag(LogFragment.TAG) != null
@@ -173,5 +146,28 @@ class MainActivity : AppCompatActivity() {
             navigateToListFragment()
         else
             super.onBackPressed()
+    }
+
+    private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+        if (tryNavigateToListFragment(item.itemId))
+            return@OnNavigationItemSelectedListener true
+
+        false
+    }
+
+    private val onLogButtonClickedListener = View.OnClickListener {
+        navigateToLogFragment()
+    }
+
+    private val onLogUpdatedListener = object: Logger.OnLogUpdateListener {
+        override fun onLogUpdated() = refreshLogButtonText()
+    }
+
+    private val onFabClickedListener = View.OnClickListener {
+        // When in the log fragment, the FAB clears the log; when in a list fragment, it adds an item
+        if (isLogFragmentOpen())
+            Logger.reset()
+        else
+            IceCreamRepository.getInstance().generateNewItem()
     }
 }

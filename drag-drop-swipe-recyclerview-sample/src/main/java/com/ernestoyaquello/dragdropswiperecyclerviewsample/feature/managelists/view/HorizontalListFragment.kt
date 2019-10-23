@@ -14,9 +14,7 @@ import com.ernestoyaquello.dragdropswiperecyclerviewsample.config.local.currentL
 import com.ernestoyaquello.dragdropswiperecyclerviewsample.databinding.FragmentHorizontalListBinding
 import com.ernestoyaquello.dragdropswiperecyclerviewsample.feature.managelists.view.base.BaseListFragment
 
-/**
- * This fragment shows a horizontal list of ice creams.
- */
+
 class HorizontalListFragment : BaseListFragment() {
 
     private lateinit var binding: FragmentHorizontalListBinding

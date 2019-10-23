@@ -14,9 +14,6 @@ import com.ernestoyaquello.dragdropswiperecyclerviewsample.config.local.currentL
 import com.ernestoyaquello.dragdropswiperecyclerviewsample.databinding.FragmentGridListBinding
 import com.ernestoyaquello.dragdropswiperecyclerviewsample.feature.managelists.view.base.BaseListFragment
 
-/**
- * This fragment shows a grid-arranged list of ice creams.
- */
 class GridListFragment : BaseListFragment() {
 
     private lateinit var binding: FragmentGridListBinding
