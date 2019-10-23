@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewGroup
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.NO_POSITION
@@ -15,6 +14,7 @@ import com.ernestoyaquello.dragdropswiperecyclerview.listener.OnItemSwipeListene
 import com.ernestoyaquello.dragdropswiperecyclerview.util.DragDropSwipeTouchHelper
 import com.ernestoyaquello.dragdropswiperecyclerview.util.drawHorizontalDividers
 import com.ernestoyaquello.dragdropswiperecyclerview.util.drawVerticalDividers
+import kotlin.math.abs
 
 /**
  * Needs to be implemented by any adapter to be used within a DragDropSwipeRecyclerView.
@@ -580,9 +580,9 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
             if (list.reduceItemAlphaOnSwiping) {
                 val offsetToItemSizeRatio =
                         if (isSwipingHorizontally)
-                            Math.abs(offsetX).toFloat() / (originalLayoutAreaRight - originalLayoutAreaLeft).toFloat()
+                            abs(offsetX).toFloat() / (originalLayoutAreaRight - originalLayoutAreaLeft).toFloat()
                         else
-                            Math.abs(offsetY).toFloat() / (originalLayoutAreaBottom - originalLayoutAreaTop).toFloat()
+                            abs(offsetY).toFloat() / (originalLayoutAreaBottom - originalLayoutAreaTop).toFloat()
                 newItemAlpha = 1.1f - offsetToItemSizeRatio
                 newItemAlpha = if (newItemAlpha < 0.1f) 0.1f else newItemAlpha
                 newItemAlpha = if (newItemAlpha > 1f) 1f else newItemAlpha

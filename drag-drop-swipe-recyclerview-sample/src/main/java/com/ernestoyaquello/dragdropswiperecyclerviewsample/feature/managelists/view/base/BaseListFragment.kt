@@ -3,10 +3,12 @@ package com.ernestoyaquello.dragdropswiperecyclerviewsample.feature.managelists.
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.*
-import android.widget.FrameLayout
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
 import android.widget.ProgressBar
+import androidx.fragment.app.Fragment
 import com.ernestoyaquello.dragdropswiperecyclerview.DragDropSwipeRecyclerView
 import com.ernestoyaquello.dragdropswiperecyclerview.listener.OnItemDragListener
 import com.ernestoyaquello.dragdropswiperecyclerview.listener.OnItemSwipeListener

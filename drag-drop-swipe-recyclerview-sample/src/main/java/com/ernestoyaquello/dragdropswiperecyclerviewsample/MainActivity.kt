@@ -1,16 +1,13 @@
 package com.ernestoyaquello.dragdropswiperecyclerviewsample
 
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.content.res.AppCompatResources
 import android.view.MenuItem
 import android.view.View
-import android.widget.FrameLayout
-import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import com.ernestoyaquello.dragdropswiperecyclerviewsample.config.local.ListFragmentType
 import com.ernestoyaquello.dragdropswiperecyclerviewsample.config.local.currentListFragmentType
 import com.ernestoyaquello.dragdropswiperecyclerviewsample.data.source.IceCreamRepository
@@ -22,7 +19,6 @@ import com.ernestoyaquello.dragdropswiperecyclerviewsample.feature.managelists.v
 import com.ernestoyaquello.dragdropswiperecyclerviewsample.feature.managelog.view.LogFragment
 import com.ernestoyaquello.dragdropswiperecyclerviewsample.util.Logger
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 /**
  * Main Activity of the app. Handles the navigation to the list sample screens and to the log screen.

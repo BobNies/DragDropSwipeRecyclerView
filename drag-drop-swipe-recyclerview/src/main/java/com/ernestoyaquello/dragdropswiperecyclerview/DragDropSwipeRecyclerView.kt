@@ -3,19 +3,18 @@ package com.ernestoyaquello.dragdropswiperecyclerview
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.Drawable
+import android.os.Bundle
 import android.os.Parcelable
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.ItemTouchHelper
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.ernestoyaquello.dragdropswiperecyclerview.listener.OnItemDragListener
 import com.ernestoyaquello.dragdropswiperecyclerview.listener.OnItemSwipeListener
 import com.ernestoyaquello.dragdropswiperecyclerview.util.DragDropSwipeItemDecoration
-import android.os.Bundle
-import com.ernestoyaquello.dragdropswiperecyclerview.util.RecyclerViewUtil
 
 /**
  * Extension of RecyclerView that detects swipe, drag & drop and scrolling.
