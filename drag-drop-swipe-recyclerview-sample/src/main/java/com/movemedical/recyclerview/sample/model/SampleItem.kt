@@ -2,7 +2,7 @@ package com.movemedical.recyclerview.sample.model
 
 data class SampleItem(
         val name: String,
-        val price: Float,
+        val price: String,
         val colorRed: Float,
         val colorGreen: Float,
         val colorBlue: Float,

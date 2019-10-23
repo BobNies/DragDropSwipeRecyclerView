@@ -21,7 +21,6 @@ import com.movemedical.recyclerview.sample.currentListFragmentType
 import com.movemedical.recyclerview.sample.model.SampleItem
 import com.movemedical.recyclerview.sample.persist.BaseRepository
 import com.movemedical.recyclerview.sample.persist.SampleItemRepository
-import com.movemedical.recyclerview.sample.util.Logger
 import com.movemedical.recyclerview.sample.view.adapters.SampleListAdapter
 
 /**
@@ -52,18 +51,15 @@ abstract class BaseListFragment : Fragment() {
 
     val onItemDragListener = object : OnItemDragListener<SampleItem> {
         override fun onItemDragged(previousPosition: Int, newPosition: Int, item: SampleItem) {
-            Logger.log("$item is being dragged from position $previousPosition to position $newPosition")
+
         }
 
         override fun onItemDropped(initialPosition: Int, finalPosition: Int, item: SampleItem) {
             if (initialPosition != finalPosition) {
-                Logger.log("$item moved (dragged from position $initialPosition and dropped in position $finalPosition)")
 
                 // Change item position inside the repository
                 repository.removeItem(item)
                 repository.insertItem(item, finalPosition)
-            } else {
-                Logger.log("$item dragged from (and also dropped in) the position $initialPosition")
             }
         }
     }
@@ -84,8 +80,6 @@ abstract class BaseListFragment : Fragment() {
         override fun onItemAdded(item: SampleItem, position: Int) {
             // Add the item to the adapter's data set if necessary
             if (!adapter.dataSet.contains(item)) {
-                Logger.log("Added new item $item")
-
                 adapter.insertItem(position, item)
 
                 // We scroll to the position of the added item (positions match in both adapter and repository)
@@ -214,38 +208,26 @@ abstract class BaseListFragment : Fragment() {
     }
 
     private fun onItemSwipedLeft(item: SampleItem, position: Int) {
-        Logger.log("$item (position $position) swiped to the left")
-
         removeItem(item, position)
     }
 
     private fun onItemSwipedRight(item: SampleItem, position: Int) {
-        Logger.log("$item (position $position) swiped to the right")
-
         archiveItem(item, position)
     }
 
     private fun onItemSwipedUp(item: SampleItem, position: Int) {
-        Logger.log("$item (position $position) swiped up")
-
         archiveItem(item, position)
     }
 
     private fun onItemSwipedDown(item: SampleItem, position: Int) {
-        Logger.log("$item (position $position) swiped down")
-
         removeItem(item, position)
     }
 
     private fun removeItem(item: SampleItem, position: Int) {
-        Logger.log("Removed item $item")
-
         removeItemFromList(item, position, R.string.itemRemovedMessage)
     }
 
     private fun archiveItem(item: SampleItem, position: Int) {
-        Logger.log("Archived item $item")
-
         removeItemFromList(item, position, R.string.itemArchivedMessage)
     }
 
@@ -254,10 +236,9 @@ abstract class BaseListFragment : Fragment() {
 
         val itemSwipedSnackBar = Snackbar.make(view!!, getString(stringResourceId, item), Snackbar.LENGTH_SHORT)
         itemSwipedSnackBar.setAction(getString(R.string.undoCaps)) {
-            Logger.log("UNDO: $item has been added back to the list in the position $position")
-
             repository.insertItem(item, position)
         }
+
         itemSwipedSnackBar.show()
     }
 }

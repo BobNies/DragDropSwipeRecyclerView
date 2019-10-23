@@ -1,70 +1,40 @@
 package com.movemedical.recyclerview.sample.view.adapters
 
-import android.content.res.ColorStateList
 import android.graphics.Canvas
-import android.graphics.Color
 import android.view.LayoutInflater
-import androidx.core.widget.ImageViewCompat
-import androidx.appcompat.widget.AppCompatImageView
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import com.movemedical.recyclerview.DragDropSwipeAdapter
-import com.movemedical.recyclerview.sample.R
+import com.movemedical.recyclerview.sample.databinding.ListItemVerticalListBinding
 import com.movemedical.recyclerview.sample.model.SampleItem
-import com.movemedical.recyclerview.sample.util.Logger
 
 /**
  * Sample Adapter
  */
-class SampleListAdapter(dataSet: List<SampleItem> = emptyList())
-    : DragDropSwipeAdapter<SampleItem, SampleListAdapter.ViewHolder>(dataSet) {
-
-    class ViewHolder(iceCreamLayout: View) : DragDropSwipeAdapter.ViewHolder(iceCreamLayout) {
-        val iceCreamNameView: TextView = itemView.findViewById(R.id.ice_cream_name)
-        val iceCreamPriceView: TextView = itemView.findViewById(R.id.ice_cream_price)
-        val dragIcon: AppCompatImageView = itemView.findViewById(R.id.drag_icon)
-        val iceCreamIcon: AppCompatImageView? = itemView.findViewById(R.id.ice_cream_icon)
-        val iceCreamPhotoFilter: View? = itemView.findViewById(R.id.ice_cream_photo_filter)
-    }
+class SampleListAdapter(sampleItems: List<SampleItem> = emptyList())
+    : DragDropSwipeAdapter<SampleItem, SampleListAdapter.ViewHolder>(sampleItems) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-                    val itemLayout = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.list_item_vertical_list, parent, false) as View
+        val view: ListItemVerticalListBinding = ListItemVerticalListBinding.inflate(LayoutInflater.from(parent.context))
 
-            return ViewHolder(itemLayout)
+        return ViewHolder(view)
     }
 
     override fun onBindViewHolder(item: SampleItem, viewHolder: ViewHolder, position: Int) {
-        val context = viewHolder.itemView.context
-
-        // Set ice cream name and price
-        viewHolder.iceCreamNameView.text = item.name
-        viewHolder.iceCreamPriceView.text = context.getString(R.string.priceFormat, item.price)
-
-        // Set ice cream icon color
-        val red = (item.colorRed * 255).toInt()
-        val green = (item.colorGreen * 255).toInt()
-        val blue = (item.colorBlue * 255).toInt()
-
-        // Set the icon/image color
-        if (viewHolder.iceCreamIcon != null) {
-            val iceCreamIconColor = Color.rgb(red, green, blue)
-            ImageViewCompat.setImageTintList(viewHolder.iceCreamIcon, ColorStateList.valueOf(iceCreamIconColor))
-        } else if (viewHolder.iceCreamPhotoFilter != null) {
-            val iceCreamPhotoFilter = Color.argb(128, red, green, blue)
-            viewHolder.iceCreamPhotoFilter.setBackgroundColor(iceCreamPhotoFilter)
-        }
+        val item = dataSet[position]
+        viewHolder.binding?.item = item
     }
 
-    override fun getViewToTouchToStartDraggingItem(item: SampleItem, viewHolder: ViewHolder, position: Int) = viewHolder.dragIcon
+    override fun getViewToTouchToStartDraggingItem(item: SampleItem, viewHolder: ViewHolder, position: Int): View? {
+        return viewHolder.binding?.dragIcon
+    }
 
     override fun onDragStarted(item: SampleItem, viewHolder: ViewHolder) {
-        Logger.log("Dragging started on ${item.name}")
+
     }
 
     override fun onSwipeStarted(item: SampleItem, viewHolder: ViewHolder) {
-        Logger.log("Swiping started on ${item.name}")
+
     }
 
     override fun onIsDragging(
@@ -75,8 +45,6 @@ class SampleListAdapter(dataSet: List<SampleItem> = emptyList())
             canvasUnder: Canvas?,
             canvasOver: Canvas?,
             isUserControlled: Boolean) {
-        // Call commented out to avoid saturating the log
-        //Logger.log("The ${if (isUserControlled) "User" else "System"} is dragging ${item.name} (offset X: $offsetX, offset Y: $offsetY)")
     }
 
     override fun onIsSwiping(
@@ -87,15 +55,22 @@ class SampleListAdapter(dataSet: List<SampleItem> = emptyList())
             canvasUnder: Canvas?,
             canvasOver: Canvas?,
             isUserControlled: Boolean) {
-        // Call commented out to avoid saturating the log
-        //Logger.log("The ${if (isUserControlled) "User" else "System"} is swiping ${item?.name} (offset X: $offsetX, offset Y: $offsetY)")
     }
 
     override fun onDragFinished(item: SampleItem, viewHolder: ViewHolder) {
-        Logger.log("Dragging finished on ${item.name} (the item was dropped)")
+
     }
 
     override fun onSwipeAnimationFinished(viewHolder: ViewHolder) {
-        Logger.log("Swiping animation finished")
+
+    }
+
+    inner class ViewHolder(itemView: View) : DragDropSwipeAdapter.ViewHolder(itemView) {
+        var binding: ListItemVerticalListBinding? = null
+
+        constructor(binding: ListItemVerticalListBinding) : this(binding.root) {
+            this.binding = binding
+            this.binding?.executePendingBindings()
+        }
     }
 }

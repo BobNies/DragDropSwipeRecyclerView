@@ -11,7 +11,7 @@ import kotlin.math.floor
 class SampleItemRepository : BaseRepository<SampleItem>() {
 
     override fun generateNewItem(): SampleItem {
-        val item = SampleItem(randomName(), randomPrice(), randomColor(), randomColor(), randomColor())
+        val item = SampleItem(randomName(), randomPrice().toString(), randomColor(), randomColor(), randomColor())
         addItem(item)
 
         return item
