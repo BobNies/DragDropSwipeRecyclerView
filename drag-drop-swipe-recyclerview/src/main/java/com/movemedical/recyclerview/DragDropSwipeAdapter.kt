@@ -2,6 +2,7 @@ package com.movemedical.recyclerview
 
 import android.graphics.Canvas
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -36,6 +37,9 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
             mutableDataSet = value.toMutableList()
             notifyDataSetChanged()
         }
+
+    //enable/disable all drag,drop,swipe functionality
+    var isEnabled = true
 
     private val orientation: DragDropSwipeRecyclerView.ListOrientation
         get() = recyclerView?.orientation
@@ -348,28 +352,30 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
         val item = mutableDataSet[position]
 
         holder.apply {
+            //val isHeader = viewHolderItem.
             // Setting these lambdas here instead of only once inside onCreateViewHolder() to make
             // sure they get set even if onCreateViewHolder() is overridden by the user
             canBeDragged = holder.canBeDragged ?: {
                 val viewHolderPosition = holder.adapterPosition
-                if (viewHolderPosition != NO_POSITION) {
-                    val viewHolderItem = mutableDataSet[viewHolderPosition]
+                val viewHolderItem = mutableDataSet[viewHolderPosition]
+                if (isEnabled &&viewHolderPosition != NO_POSITION) {
                     canBeDragged(viewHolderItem, holder, viewHolderPosition)
                 }
                 else false
             }
             canBeDroppedOver = holder.canBeDroppedOver ?: {
                 val viewHolderPosition = holder.adapterPosition
-                if (viewHolderPosition != NO_POSITION) {
-                    val viewHolderItem = mutableDataSet[viewHolderPosition]
+                val viewHolderItem = mutableDataSet[viewHolderPosition]
+                if (isEnabled && viewHolderPosition != NO_POSITION) {
                     canBeDroppedOver(viewHolderItem, holder, viewHolderPosition)
                 }
                 else false
             }
+
             canBeSwiped = holder.canBeSwiped ?: {
                 val viewHolderPosition = holder.adapterPosition
-                if (viewHolderPosition != NO_POSITION) {
-                    val viewHolderItem = mutableDataSet[viewHolderPosition]
+                val viewHolderItem = mutableDataSet[viewHolderPosition]
+                if (isEnabled && viewHolderPosition != NO_POSITION) {
                     canBeSwiped(viewHolderItem, holder, viewHolderPosition)
                 }
                 else false
