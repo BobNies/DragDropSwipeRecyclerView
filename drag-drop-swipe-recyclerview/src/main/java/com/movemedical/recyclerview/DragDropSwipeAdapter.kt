@@ -51,7 +51,8 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
     abstract class ViewHolder(layout: View) : RecyclerView.ViewHolder(layout) {
         internal var canBeDragged: (() -> Boolean)? = null
         internal var canBeDroppedOver: (() -> Boolean)? = null
-        internal var canBeSwiped: (() -> Boolean)? = null
+        internal var canBeSwipedLeft: (() -> Boolean)? = null
+        internal var canBeSwipedRight: (() -> Boolean)? = null
         internal var isBeingDragged = false
         internal var isBeingSwiped = false
         internal var behindSwipedItemLayout: View? = null
@@ -120,7 +121,8 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
      * @param position The position of the item within the adapter's data set.
      * @return True if the item can be swiped; false otherwise.
      */
-    protected open fun canBeSwiped(item: T, viewHolder: U, position: Int) = true
+    protected open fun canBeSwipedLeft(item: T, viewHolder: U, position: Int) = true
+    protected open fun canBeSwipedRight(item: T, viewHolder: U, position: Int) = true
 
     /**
      * Called automatically to get the ID of the layout that will be displayed behind this specific
@@ -378,14 +380,24 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
                 else false
             }
 
-            canBeSwiped = holder.canBeSwiped ?: {
+            canBeSwipedLeft = holder.canBeSwipedLeft ?: {
                 val viewHolderPosition = holder.adapterPosition
                 val viewHolderItem = mutableDataSet[viewHolderPosition]
                 if (isEnabled && viewHolderPosition != NO_POSITION) {
-                    canBeSwiped(viewHolderItem, holder, viewHolderPosition)
+                    canBeSwipedLeft(viewHolderItem, holder, viewHolderPosition)
                 }
                 else false
             }
+            //TODO - new
+            canBeSwipedRight = holder.canBeSwipedRight ?: {
+                val viewHolderPosition = holder.adapterPosition
+                val viewHolderItem = mutableDataSet[viewHolderPosition]
+                if (isEnabled && viewHolderPosition != NO_POSITION) {
+                    canBeSwipedRight(viewHolderItem, holder, viewHolderPosition)
+                }
+                else false
+            }
+
             itemView.alpha = 1f
             behindSwipedItemLayout = getBehindSwipedItemLayout(item, holder, position)
             behindSwipedItemSecondaryLayout = getBehindSwipedItemSecondaryLayout(item, holder, position)

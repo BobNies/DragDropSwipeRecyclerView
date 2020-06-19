@@ -1,8 +1,8 @@
 package com.movemedical.recyclerview.util
 
 import android.graphics.Canvas
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.movemedical.recyclerview.DragDropSwipeAdapter
 import com.movemedical.recyclerview.DragDropSwipeRecyclerView
 import com.movemedical.recyclerview.DragDropSwipeRecyclerView.ListOrientation
@@ -10,11 +10,11 @@ import com.movemedical.recyclerview.DragDropSwipeRecyclerView.ListOrientation.Di
 import com.movemedical.recyclerview.listener.OnItemSwipeListener.SwipeDirection
 
 internal class DragDropSwipeTouchHelper(
-        private val itemDragListener: OnItemDragListener,
-        private val itemSwipeListener: OnItemSwipeListener,
-        private val itemStateChangeListener: OnItemStateChangeListener,
-        private val itemLayoutPositionChangeListener: OnItemLayoutPositionChangeListener,
-        internal var recyclerView: DragDropSwipeRecyclerView?
+    private val itemDragListener: OnItemDragListener,
+    private val itemSwipeListener: OnItemSwipeListener,
+    private val itemStateChangeListener: OnItemStateChangeListener,
+    private val itemLayoutPositionChangeListener: OnItemLayoutPositionChangeListener,
+    internal var recyclerView: DragDropSwipeRecyclerView?
 ) : ItemTouchHelper.Callback() {
 
     /**
@@ -59,13 +59,14 @@ internal class DragDropSwipeTouchHelper(
         }
 
         fun onPositionChanged(
-                action: Action,
-                viewHolder: RecyclerView.ViewHolder,
-                offsetX: Int,
-                offsetY: Int,
-                canvasUnder: Canvas?,
-                canvasOver: Canvas?,
-                isUserControlled: Boolean) {
+            action: Action,
+            viewHolder: RecyclerView.ViewHolder,
+            offsetX: Int,
+            offsetY: Int,
+            canvasUnder: Canvas?,
+            canvasOver: Canvas?,
+            isUserControlled: Boolean
+        ) {
         }
     }
 
@@ -96,8 +97,9 @@ internal class DragDropSwipeTouchHelper(
         val itemWidth = viewHolder.itemView.measuredWidth
         val itemHeight = viewHolder.itemView.measuredHeight
         if (recyclerViewWidth != null && recyclerViewHeight != null) {
-            val isSwipingHorizontally = (mOrientation.swipeFlagsValue and DirectionFlag.RIGHT.value == DirectionFlag.RIGHT.value)
-                    || (mOrientation.swipeFlagsValue and DirectionFlag.LEFT.value == DirectionFlag.LEFT.value)
+            val isSwipingHorizontally =
+                (mOrientation.swipeFlagsValue and DirectionFlag.RIGHT.value == DirectionFlag.RIGHT.value)
+                        || (mOrientation.swipeFlagsValue and DirectionFlag.LEFT.value == DirectionFlag.LEFT.value)
             threshold *= if (isSwipingHorizontally)
                 (itemWidth.toFloat() / recyclerViewWidth.toFloat())
             else
@@ -107,52 +109,76 @@ internal class DragDropSwipeTouchHelper(
         return threshold
     }
 
-    override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
+    override fun getMovementFlags(
+        recyclerView: RecyclerView,
+        viewHolder: RecyclerView.ViewHolder
+    ): Int {
+
         if (viewHolder is DragDropSwipeAdapter.ViewHolder) {
+            val canSwipeRight = viewHolder.canBeSwipedRight?.invoke() == true
+            val canSwipeLeft = viewHolder.canBeSwipedLeft?.invoke() == true
+            val swipeFlag = if (canSwipeRight && canSwipeLeft) {
+                // swipe right or left
+                mOrientation.swipeFlagsValue
+            } else if (canSwipeRight) {
+                //Swipe right only
+                makeFlag(ItemTouchHelper.ACTION_STATE_SWIPE, ItemTouchHelper.RIGHT)
+            } else if (canSwipeLeft) {
+                // swipe left only
+                makeFlag(ItemTouchHelper.ACTION_STATE_SWIPE, ItemTouchHelper.LEFT)
+            } else {
+                // no swiping
+                0
+            }
             return makeMovementFlags(
-                    if (viewHolder.canBeDragged?.invoke() == true) mOrientation.dragFlagsValue else 0,
-                    if (viewHolder.canBeSwiped?.invoke() == true) mOrientation.swipeFlagsValue else 0)
+                if (viewHolder.canBeDragged?.invoke() == true) mOrientation.dragFlagsValue else 0,
+                swipeFlag
+            )
         }
 
         return 0
     }
 
     override fun onMove(
-            recyclerView: RecyclerView,
-            viewHolder: RecyclerView.ViewHolder,
-            target: RecyclerView.ViewHolder): Boolean {
+        recyclerView: RecyclerView,
+        viewHolder: RecyclerView.ViewHolder,
+        target: RecyclerView.ViewHolder
+    ): Boolean {
         itemDragListener.onItemDragged(viewHolder.adapterPosition, target.adapterPosition)
 
         return true
     }
 
     override fun canDropOver(
-            recyclerView: RecyclerView,
-            current: RecyclerView.ViewHolder,
-            target: RecyclerView.ViewHolder) =
-            (target as? DragDropSwipeAdapter.ViewHolder)?.canBeDroppedOver?.invoke() == true
+        recyclerView: RecyclerView,
+        current: RecyclerView.ViewHolder,
+        target: RecyclerView.ViewHolder
+    ) =
+        (target as? DragDropSwipeAdapter.ViewHolder)?.canBeDroppedOver?.invoke() == true
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+
         val position = viewHolder.adapterPosition
         val swipeDirection =
-                when (direction) {
-                    ItemTouchHelper.LEFT -> SwipeDirection.RIGHT_TO_LEFT
-                    ItemTouchHelper.RIGHT -> SwipeDirection.LEFT_TO_RIGHT
-                    ItemTouchHelper.UP -> SwipeDirection.DOWN_TO_UP
-                    else -> SwipeDirection.UP_TO_DOWN
-                }
+            when (direction) {
+                ItemTouchHelper.LEFT -> SwipeDirection.RIGHT_TO_LEFT
+                ItemTouchHelper.RIGHT -> SwipeDirection.LEFT_TO_RIGHT
+                ItemTouchHelper.UP -> SwipeDirection.DOWN_TO_UP
+                else -> SwipeDirection.UP_TO_DOWN
+            }
 
         itemSwipeListener.onItemSwiped(position, swipeDirection)
     }
 
     override fun onChildDraw(
-            c: Canvas,
-            recyclerView: RecyclerView,
-            viewHolder: RecyclerView.ViewHolder,
-            dX: Float,
-            dY: Float,
-            actionState: Int,
-            isCurrentlyActive: Boolean) {
+        c: Canvas,
+        recyclerView: RecyclerView,
+        viewHolder: RecyclerView.ViewHolder,
+        dX: Float,
+        dY: Float,
+        actionState: Int,
+        isCurrentlyActive: Boolean
+    ) {
 
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
 
@@ -160,13 +186,14 @@ internal class DragDropSwipeTouchHelper(
     }
 
     override fun onChildDrawOver(
-            c: Canvas,
-            recyclerView: RecyclerView,
-            viewHolder: RecyclerView.ViewHolder,
-            dX: Float,
-            dY: Float,
-            actionState: Int,
-            isCurrentlyActive: Boolean) {
+        c: Canvas,
+        recyclerView: RecyclerView,
+        viewHolder: RecyclerView.ViewHolder,
+        dX: Float,
+        dY: Float,
+        actionState: Int,
+        isCurrentlyActive: Boolean
+    ) {
 
         super.onChildDrawOver(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
 
@@ -191,13 +218,14 @@ internal class DragDropSwipeTouchHelper(
     }
 
     private fun onChildDrawImpl(
-            canvasUnder: Canvas?,
-            canvasOver: Canvas?,
-            viewHolder: RecyclerView.ViewHolder,
-            dX: Float,
-            dY: Float,
-            actionState: Int,
-            isCurrentlyActive: Boolean) {
+        canvasUnder: Canvas?,
+        canvasOver: Canvas?,
+        viewHolder: RecyclerView.ViewHolder,
+        dX: Float,
+        dY: Float,
+        actionState: Int,
+        isCurrentlyActive: Boolean
+    ) {
 
         val action = when (actionState) {
             ItemTouchHelper.ACTION_STATE_SWIPE -> OnItemLayoutPositionChangeListener.Action.SWIPING
@@ -209,13 +237,14 @@ internal class DragDropSwipeTouchHelper(
             val offsetX = dX.toInt()
             val offsetY = dY.toInt()
             itemLayoutPositionChangeListener.onPositionChanged(
-                    action,
-                    viewHolder,
-                    offsetX,
-                    offsetY,
-                    canvasUnder,
-                    canvasOver,
-                    isCurrentlyActive)
+                action,
+                viewHolder,
+                offsetX,
+                offsetY,
+                canvasUnder,
+                canvasOver,
+                isCurrentlyActive
+            )
         }
     }
 
@@ -223,13 +252,15 @@ internal class DragDropSwipeTouchHelper(
         isDragging = true
         initialItemPositionForOngoingDraggingEvent = viewHolder.adapterPosition
         itemStateChangeListener.onStateChanged(
-                OnItemStateChangeListener.StateChangeType.DRAG_STARTED, viewHolder)
+            OnItemStateChangeListener.StateChangeType.DRAG_STARTED, viewHolder
+        )
     }
 
     private fun onStartedSwiping(viewHolder: RecyclerView.ViewHolder) {
         isSwiping = true
         itemStateChangeListener.onStateChanged(
-                OnItemStateChangeListener.StateChangeType.SWIPE_STARTED, viewHolder)
+            OnItemStateChangeListener.StateChangeType.SWIPE_STARTED, viewHolder
+        )
     }
 
     private fun onFinishedDraggingOrSwiping(viewHolder: RecyclerView.ViewHolder) {
@@ -246,14 +277,19 @@ internal class DragDropSwipeTouchHelper(
         val finalItemPositionForFinishedDraggingEvent = viewHolder.adapterPosition
         isDragging = false
         initialItemPositionForOngoingDraggingEvent = -1
-        itemDragListener.onItemDropped(initialItemPositionForFinishedDraggingEvent, finalItemPositionForFinishedDraggingEvent)
+        itemDragListener.onItemDropped(
+            initialItemPositionForFinishedDraggingEvent,
+            finalItemPositionForFinishedDraggingEvent
+        )
         itemStateChangeListener.onStateChanged(
-                OnItemStateChangeListener.StateChangeType.DRAG_FINISHED, viewHolder)
+            OnItemStateChangeListener.StateChangeType.DRAG_FINISHED, viewHolder
+        )
     }
 
     private fun onFinishedSwiping(viewHolder: RecyclerView.ViewHolder) {
         isSwiping = false
         itemStateChangeListener.onStateChanged(
-                OnItemStateChangeListener.StateChangeType.SWIPE_FINISHED, viewHolder)
+            OnItemStateChangeListener.StateChangeType.SWIPE_FINISHED, viewHolder
+        )
     }
 }
