@@ -2,7 +2,6 @@ package com.movemedical.recyclerview
 
 import android.graphics.Canvas
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -18,8 +17,6 @@ import com.movemedical.recyclerview.util.drawVerticalDividers
 import kotlin.math.abs
 
 /**
- * Needs to be implemented by any adapter to be used within a MoveRecyclerView.
- *
  * @param T The type of the item.
  * @param U The type of the view holder.
  * @property dataSet The data set.
@@ -59,6 +56,7 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
         internal var isBeingSwiped = false
         internal var behindSwipedItemLayout: View? = null
         internal var behindSwipedItemSecondaryLayout: View? = null
+        internal var canBeDeletedOnSwipe = true
     }
 
     /**
@@ -172,6 +170,11 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
     protected open fun onSwipeStarted(item: T, viewHolder: U) {
         // Do nothing in this method because it is up to the user of this library to implement or not
     }
+
+    /**
+     * Upon swipe completed, can the row be removed?
+     */
+    protected open fun canBeDeleted(position: Int) = true
 
     /**
      * Called when the dragging action (or animation) is occurring.
@@ -355,6 +358,9 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
             //val isHeader = viewHolderItem.
             // Setting these lambdas here instead of only once inside onCreateViewHolder() to make
             // sure they get set even if onCreateViewHolder() is overridden by the user
+
+            canBeDeletedOnSwipe = holder.canBeDeletedOnSwipe
+
             canBeDragged = holder.canBeDragged ?: {
                 val viewHolderPosition = holder.adapterPosition
                 val viewHolderItem = mutableDataSet[viewHolderPosition]
@@ -449,8 +455,10 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
         moveItem(previousPosition, newPosition)
     }
 
-    private fun onListItemSwiped(position: Int) {
-        removeItem(position)
+    fun onListItemSwiped(position: Int) {
+        if(canBeDeleted(position)) {
+            removeItem(position)
+        }
     }
 
     private fun onDragStartedImpl(viewHolder: U) {
@@ -498,7 +506,7 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
                 // The behind-swiped-items layout was never inflated before or the
                 // layout ID has changed, so we inflate it
                 return recyclerView?.context?.let { context ->
-                     LayoutInflater
+                    LayoutInflater
                             .from(context)
                             .inflate(behindSwipedItemLayoutId, null, false)
                 }
