@@ -1,5 +1,6 @@
 package com.movemedical.recyclerview
 
+import android.annotation.SuppressLint
 import android.graphics.Canvas
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -357,53 +358,49 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
         val item = mutableDataSet[position]
 
         holder.apply {
-            //val isHeader = viewHolderItem.
             // Setting these lambdas here instead of only once inside onCreateViewHolder() to make
             // sure they get set even if onCreateViewHolder() is overridden by the user
 
             canBeDeletedOnSwipe = holder.canBeDeletedOnSwipe
+            val viewHolderPosition = holder.adapterPosition
 
-            canBeDragged = holder.canBeDragged ?: {
-                val viewHolderPosition = holder.adapterPosition
-                val viewHolderItem = mutableDataSet[viewHolderPosition]
-                if (isEnabled &&viewHolderPosition != NO_POSITION) {
-                    canBeDragged(viewHolderItem, holder, viewHolderPosition)
-                }
-                else false
-            }
-            canBeDroppedOver = holder.canBeDroppedOver ?: {
-                val viewHolderPosition = holder.adapterPosition
-                val viewHolderItem = mutableDataSet[viewHolderPosition]
-                if (isEnabled && viewHolderPosition != NO_POSITION) {
-                    canBeDroppedOver(viewHolderItem, holder, viewHolderPosition)
-                }
-                else false
-            }
+            if (viewHolderPosition != NO_POSITION) {
+                canBeDragged = holder.canBeDragged ?: {
 
-            canBeSwipedLeft = holder.canBeSwipedLeft ?: {
-                val viewHolderPosition = holder.adapterPosition
-                val viewHolderItem = mutableDataSet[viewHolderPosition]
-                if (isEnabled && viewHolderPosition != NO_POSITION) {
-                    canBeSwipedLeft(viewHolderItem, holder, viewHolderPosition)
+                    val viewHolderItem = mutableDataSet[viewHolderPosition]
+                    if (isEnabled) {
+                        canBeDragged(viewHolderItem, holder, viewHolderPosition)
+                    } else false
                 }
-                else false
-            }
-            //TODO - new
-            canBeSwipedRight = holder.canBeSwipedRight ?: {
-                val viewHolderPosition = holder.adapterPosition
-                val viewHolderItem = mutableDataSet[viewHolderPosition]
-                if (isEnabled && viewHolderPosition != NO_POSITION) {
-                    canBeSwipedRight(viewHolderItem, holder, viewHolderPosition)
+                canBeDroppedOver = holder.canBeDroppedOver ?: {
+                    val viewHolderItem = mutableDataSet[viewHolderPosition]
+                    if (isEnabled) {
+                        canBeDroppedOver(viewHolderItem, holder, viewHolderPosition)
+                    } else false
                 }
-                else false
-            }
 
-            itemView.alpha = 1f
-            behindSwipedItemLayout = getBehindSwipedItemLayout(item, holder, position)
-            behindSwipedItemSecondaryLayout = getBehindSwipedItemSecondaryLayout(item, holder, position)
+                canBeSwipedLeft = holder.canBeSwipedLeft ?: {
+                    val viewHolderItem = mutableDataSet[viewHolderPosition]
+                    if (isEnabled) {
+                        canBeSwipedLeft(viewHolderItem, holder, viewHolderPosition)
+                    } else false
+                }
+
+                canBeSwipedRight = holder.canBeSwipedRight ?: {
+                    val viewHolderItem = mutableDataSet[viewHolderPosition]
+                    if (isEnabled) {
+                        canBeSwipedRight(viewHolderItem, holder, viewHolderPosition)
+                    } else false
+                }
+
+                itemView.alpha = 1f
+                behindSwipedItemLayout = getBehindSwipedItemLayout(item, holder, position)
+                behindSwipedItemSecondaryLayout = getBehindSwipedItemSecondaryLayout(item, holder, position)
+            }
         }
 
-        val viewToDrag = getViewToTouchToStartDraggingItem(item, holder, position) ?: holder.itemView
+        val viewToDrag = getViewToTouchToStartDraggingItem(item, holder, position)
+                ?: holder.itemView
         setItemDragAndDrop(viewToDrag, holder)
 
         onBindViewHolder(item, holder, position)
@@ -468,7 +465,7 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
     }
 
     fun onListItemSwiped(position: Int) {
-        if(canBeDeleted(position)) {
+        if (canBeDeleted(position)) {
             removeItem(position)
         }
     }
@@ -816,6 +813,7 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
     private fun setItemDragAndDrop(view: View, holder: U) =
             view.setOnTouchListener(getDragAndDropTouchListener(holder))
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun getDragAndDropTouchListener(holder: U) =
             View.OnTouchListener { _, event ->
                 if (holder.canBeDragged?.invoke() == true && event?.actionMasked == MotionEvent.ACTION_DOWN)
