@@ -6,12 +6,12 @@ apply plugin: 'com.github.dcendents.android-maven'
 
 android {
     compileSdkVersion 30
-
+    buildToolsVersion "30.0.2"
     defaultConfig {
         minSdkVersion 24
         targetSdkVersion 30
-        versionCode 14
-        versionName "0.6"
+        versionCode 15
+        versionName "0.7"
     }
 
     buildTypes {
@@ -28,7 +28,6 @@ android {
     dataBinding {
         enabled = true
     }
-    buildToolsVersion = '29.0.3'
 }
 
 dependencies {
