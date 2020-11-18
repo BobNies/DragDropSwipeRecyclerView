@@ -364,7 +364,7 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
             canBeDeletedOnSwipe = holder.canBeDeletedOnSwipe
             val viewHolderPosition = holder.adapterPosition
 
-            if (viewHolderPosition != NO_POSITION) {
+            if (viewHolderPosition != NO_POSITION && viewHolderPosition < mutableDataSet.size) {
                 canBeDragged = holder.canBeDragged ?: {
 
                     val viewHolderItem = mutableDataSet[viewHolderPosition]
