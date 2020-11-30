@@ -390,37 +390,32 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
             //val isHeader = viewHolderItem.
             // Setting these lambdas here instead of only once inside onCreateViewHolder() to make
             // sure they get set even if onCreateViewHolder() is overridden by the user
-
             canBeDeletedOnSwipe = holder.canBeDeletedOnSwipe
 
             canBeDragged = holder.canBeDragged ?: {
                 val viewHolderPosition = holder.adapterPosition
-                val viewHolderItem = mutableDataSet[viewHolderPosition]
                 if (isEnabled && viewHolderPosition != NO_POSITION) {
-                    canBeDragged(viewHolderItem, holder, viewHolderPosition)
+                    canBeDragged(mutableDataSet[viewHolderPosition], holder, viewHolderPosition)
                 } else false
             }
             canBeDroppedOver = holder.canBeDroppedOver ?: {
                 val viewHolderPosition = holder.adapterPosition
-                val viewHolderItem = mutableDataSet[viewHolderPosition]
                 if (isEnabled && viewHolderPosition != NO_POSITION) {
-                    canBeDroppedOver(viewHolderItem, holder, viewHolderPosition)
+                    canBeDroppedOver(mutableDataSet[viewHolderPosition], holder, viewHolderPosition)
                 } else false
             }
 
             canBeSwipedLeft = holder.canBeSwipedLeft ?: {
                 val viewHolderPosition = holder.adapterPosition
-                val viewHolderItem = mutableDataSet[viewHolderPosition]
                 if (isEnabled && viewHolderPosition != NO_POSITION) {
-                    canBeSwipedLeft(viewHolderItem, holder, viewHolderPosition)
+                    canBeSwipedLeft(mutableDataSet[viewHolderPosition], holder, viewHolderPosition)
                 } else false
             }
 
             canBeSwipedRight = holder.canBeSwipedRight ?: {
                 val viewHolderPosition = holder.adapterPosition
-                val viewHolderItem = mutableDataSet[viewHolderPosition]
                 if (isEnabled && viewHolderPosition != NO_POSITION) {
-                    canBeSwipedRight(viewHolderItem, holder, viewHolderPosition)
+                    canBeSwipedRight(mutableDataSet[viewHolderPosition], holder, viewHolderPosition)
                 } else false
             }
 

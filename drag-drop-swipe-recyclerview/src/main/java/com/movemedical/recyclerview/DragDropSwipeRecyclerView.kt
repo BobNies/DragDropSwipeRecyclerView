@@ -12,7 +12,6 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.movemedical.recyclerview.listener.OnItemDragListener
 import com.movemedical.recyclerview.listener.OnItemSwipeListener
 import com.movemedical.recyclerview.util.DragDropSwipeItemDecoration
@@ -543,15 +542,15 @@ open class DragDropSwipeRecyclerView @JvmOverloads constructor(
 
             try {
                 dividerDrawableId = vars.getResourceId(R.styleable.MoveRecyclerView_divider, 0)
-                behindSwipedItemIconDrawableId = vars.getResourceId(R.styleable.MoveRecyclerView_behind_swiped_item_icon, 0)
-                behindSwipedItemIconSecondaryDrawableId = vars.getResourceId(R.styleable.MoveRecyclerView_behind_swiped_item_icon_secondary, 0)
-                behindSwipedItemIconMargin = vars.getDimension(R.styleable.MoveRecyclerView_behind_swiped_item_icon_margin, 0f)
-                behindSwipedItemCenterIcon = vars.getBoolean(R.styleable.MoveRecyclerView_behind_swiped_item_icon_centered, false)
-                behindSwipedItemBackgroundColor = vars.getColor(R.styleable.MoveRecyclerView_behind_swiped_item_bg_color, Color.TRANSPARENT)
-                behindSwipedItemBackgroundSecondaryColor = vars.getColor(R.styleable.MoveRecyclerView_behind_swiped_item_bg_color_secondary, Color.TRANSPARENT)
-                behindSwipedItemLayoutId = vars.getResourceId(R.styleable.MoveRecyclerView_behind_swiped_item_custom_layout, 0)
-                behindSwipedItemSecondaryLayoutId = vars.getResourceId(R.styleable.MoveRecyclerView_behind_swiped_item_custom_layout_secondary, 0)
-                reduceItemAlphaOnSwiping = vars.getBoolean(R.styleable.MoveRecyclerView_swiped_item_opacity_fades_on_swiping, false)
+                behindSwipedItemIconDrawableId = vars.getResourceId(R.styleable.MoveRecyclerView_swiped_item_icon, 0)
+                behindSwipedItemIconSecondaryDrawableId = vars.getResourceId(R.styleable.MoveRecyclerView_swiped_item_icon_secondary, 0)
+                behindSwipedItemIconMargin = vars.getDimension(R.styleable.MoveRecyclerView_swiped_item_icon_margin, 0f)
+                behindSwipedItemCenterIcon = vars.getBoolean(R.styleable.MoveRecyclerView_swiped_item_icon_centered, false)
+                behindSwipedItemBackgroundColor = vars.getColor(R.styleable.MoveRecyclerView_swiped_item_bg_color, Color.TRANSPARENT)
+                behindSwipedItemBackgroundSecondaryColor = vars.getColor(R.styleable.MoveRecyclerView_swiped_item_bg_color_secondary, Color.TRANSPARENT)
+                behindSwipedItemLayoutId = vars.getResourceId(R.styleable.MoveRecyclerView_swiped_item_custom_layout, 0)
+                behindSwipedItemSecondaryLayoutId = vars.getResourceId(R.styleable.MoveRecyclerView_swiped_item_custom_layout_secondary, 0)
+                reduceItemAlphaOnSwiping = vars.getBoolean(R.styleable.MoveRecyclerView_item_opacity_fades_on_swiping, false)
             } finally {
                 vars.recycle()
             }
