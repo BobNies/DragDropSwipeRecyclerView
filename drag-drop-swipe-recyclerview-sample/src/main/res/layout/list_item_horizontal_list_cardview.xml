@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="com.movemedical.recyclerview.sample.model.SampleItem" />
+            type="com.ernestoyaquello.recyclerview.sample.model.SampleItem" />
     </data>
 
     <androidx.cardview.widget.CardView
